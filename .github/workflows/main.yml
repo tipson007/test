@@ -9,9 +9,4 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Use Pipeline Template
-        uses: tipson007/pipeline-templates/.github/workflows/main.yml@main
+    uses: tipson007/pipeline-templates/.github/workflows/main.yml@main
