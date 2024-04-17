@@ -4,9 +4,14 @@ on:
   push:
     branches:
       - main
-      - master
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    uses: tipson007/pipeline-templates/.github/workflows/main.yml@main
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Pipeline Template
+        uses: tipson007/pipeline-templates/.github/workflows/main.yml@main
