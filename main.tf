@@ -17,6 +17,3 @@ resource "null_resource" "example" {
     value = "An example resource that does nothing!!"
   }
 }
-resource "aws_iam_user" "lckid" {
-    name = "test"
-}
