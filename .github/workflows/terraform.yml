@@ -14,9 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Navigate to Terraform directory
-        run: cd path/to/terraform/directory
       
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
@@ -25,9 +22,11 @@ jobs:
           cli_config_credentials_token: ${{ secrets.tfc_team_token }}
       
       - name: Terraform Init
+        working-directory: terraform
         run: terraform init
 
-      - name: Terraform plan
+      - name: Terraform Plan
+        working-directory: terraform
         run: terraform plan -input=false
 
   # terra_form:
