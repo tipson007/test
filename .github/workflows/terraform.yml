@@ -29,22 +29,24 @@ jobs:
         working-directory: terraform
         run: terraform plan -input=false
 
-  # terra_form:
-  #   name: Terraform apply
-  #   runs-on: ubuntu-latest
-  #   # if:  success() && github.ref == 'refs/heads/main' && github.event_name == 'pull_request' && github.event.pull_request.merged == true
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+  terra_form:
+    name: Terraform apply
+    runs-on: ubuntu-latest
+    # if:  success() && github.ref == 'refs/heads/main' && github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       
-  #   # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-  #     - name: Setup Terraform
-  #       uses: hashicorp/setup-terraform@v1
-  #       with:
-  #         cli_config_credentials_token: ${{ secrets.tfc_team_token }}
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.tfc_team_token }}
       
-  #     - name: Terraform Init
-  #       run: terraform init
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
       
-  #     - name: Terraform Apply
-  #       run: terraform apply -auto-approve
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: terraform
