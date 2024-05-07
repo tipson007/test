@@ -1,25 +1,90 @@
+# name: Create AWS IAM User
+
+# on:
+#   push:
+#     branches:
+#       - develop
+
+# jobs:
+#   # condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+#   terraform:
+#     name: Terraform Plan
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         shell: bash
+#         working-directory: ./terraform
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+      
+#     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+#       - name: Setup Terraform
+#         uses: hashicorp/setup-terraform@v1
+#         with:
+#           cli_config_credentials_token: ${{ secrets.tfc_team_token }}
+      
+#       - name: Terraform Init
+#         run: terraform init
+
+#       - name: Terraform Plan
+#         run: terraform plan -input=false
+
+#   terra_form:
+#     name: Terraform apply
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         shell: bash
+#         working-directory: ./terraform
+#     # if:  success() && github.ref == 'refs/heads/main' && github.event_name == 'pull_request' && github.event.pull_request.merged == true
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+      
+#     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+#       - name: Setup Terraform
+#         uses: hashicorp/setup-terraform@v1
+#         with:
+#           cli_config_credentials_token: ${{ secrets.tfc_team_token }}
+      
+#       - name: Terraform Init
+#         run: terraform init
+      
+#       - name: Terraform Apply
+#         run: terraform apply -auto-approve
+
+#       - name: Terraform Destroy
+#         run: terraform destroy -auto-approve
+
+
 name: Create AWS IAM User
 
 on:
   push:
     branches:
       - develop
-      - master
 
 jobs:
-  # condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
   terraform:
-    name: Terraform Plan
+    name: Terraform Action
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
         working-directory: ./terraform
+    
+    inputs:
+      action:
+        description: 'Select Terraform action: plan, apply, or destroy'
+        required: true
+        default: 'plan'
+        options: ['plan', 'apply', 'destroy']
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -28,32 +93,5 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Plan
-        run: terraform plan -input=false
-
-  terra_form:
-    name: Terraform apply
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./terraform
-    # if:  success() && github.ref == 'refs/heads/main' && github.event_name == 'pull_request' && github.event.pull_request.merged == true
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          cli_config_credentials_token: ${{ secrets.tfc_team_token }}
-      
-      - name: Terraform Init
-        run: terraform init
-      
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
-
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+      - name: Terraform Action
+        run: terraform ${{ inputs.action }} -auto-approve
