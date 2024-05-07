@@ -61,6 +61,14 @@
 name: Create AWS IAM User
 
 on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Select Terraform action: plan, apply, or destroy'
+        required: true
+        default: 'plan'
+        options: ['plan', 'apply', 'destroy']
+  
   push:
     branches:
       - develop
@@ -73,13 +81,6 @@ jobs:
       run:
         shell: bash
         working-directory: ./terraform
-    
-    inputs:
-      action:
-        description: 'Select Terraform action: plan, apply, or destroy'
-        required: true
-        default: 'plan'
-        options: ['plan', 'apply', 'destroy']
 
     steps:
       - name: Checkout code
@@ -94,4 +95,4 @@ jobs:
         run: terraform init
 
       - name: Terraform Action
-        run: terraform ${{ inputs.action }} -auto-approve
+        run: terraform ${{ github.event.inputs.action }} -auto-approve
