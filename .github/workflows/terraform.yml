@@ -60,6 +60,8 @@
 
 name: Create AWS IAM User
 
+
+
 on:
   workflow_dispatch:
     inputs:
@@ -68,7 +70,17 @@ on:
         required: true
         default: 'plan'
         options: ['plan', 'apply', 'destroy']
-  
+
+parameters:
+  - name: image
+    displayName: Pool Image
+    type: string
+    default: ubuntu-latest
+    values:
+      - windows-latest
+      - ubuntu-latest
+      - macOS-latest
+
   push:
     branches:
       - develop
