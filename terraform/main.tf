@@ -18,9 +18,6 @@ terraform {
 #  }
 # }
 
-provider "aws" {
-  region = "eu-west-2"
-}
 
 resource "aws_iam_user" "tflock" {
     name = "testing"
@@ -28,7 +25,7 @@ resource "aws_iam_user" "tflock" {
 
 
 provider "aws" {
-  region = "eu-west-2"
+  region = "eu-west-1"
 }
 
 resource "aws_vpc" "my_vpc" {
@@ -44,7 +41,7 @@ resource "aws_vpc" "my_vpc" {
 resource "aws_subnet" "public_sn" {
   vpc_id            = aws_vpc.my_vpc.id
   cidr_block        = "10.0.1.0/24"
-  availability_zone = "eu-west-2a"
+  availability_zone = "eu-west-1a"
 
   tags = {
     Name = "Public subnet"
